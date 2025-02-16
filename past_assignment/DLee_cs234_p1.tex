@@ -1,0 +1,133 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{bbold}
+\usepackage{hyperref}
+
+\title{Prep Work 1 - Functions, Strings, and Counting }
+
+\author{CS 234}
+\date{Daniel Lee}
+
+
+\begin{document}
+\maketitle
+
+\section*{1 \quad Functions}
+
+\begin{enumerate}
+  \item In your own words, what is a function?
+
+        A function is a tool connecting the input to the output.
+  \item Give your own example of a function.
+
+        The function $KtoM : \mathbb{R} \to \mathbb{R}$ defined by $KtoM(k) = k \times 0.6213711922$ maps kilometers to miles.
+  \item What is a domain?
+
+        A domain is the type of input parameter to a function.
+  \item What is the domain of the function from task 2?
+
+        $\mathbb{R}$, which is the input based on kilometers.
+  \item What is a codomain?
+
+        A codomain is the type of output of the function.
+  \item What is the codomain of the function from task 2?
+
+        $\mathbb{R}$, which is the output based on miles.
+  \item Explain what the function type $\mathbb{Z}^{2} \rightarrow \mathbb{N} \times \mathbb{Q}$ means.
+
+        The function means that it accepts a pair of integers as an input (domain) and has a pair of natural number and rational number as the output (codomain).
+\end{enumerate}
+
+\section*{2 \quad Strings}
+
+\begin{enumerate}
+  \item In your own words, what is a string?
+
+        A string is a consectuive alignment of characters.
+  \item Give your own example of a non-empty string.
+
+        DENISONUNIVERSITYCS234
+  \item What notation do we use for the length of a string?
+
+        If there is a string s, we use two vertical bars || to denote the length of the string s as |s|.
+  \item What is the length of $\epsilon$ ? (I use $\epsilon$ to represent the empty string, whereas the textbook uses $\lambda$. Either symbol is fine.)
+
+        0
+  \item In your own words, what is a substring?
+
+        A substring is a gathering of an empty string and any strings that could constitute as a partial sequence of a string.
+  \item Give an example of a substring of the string from task 2.
+
+        UNIVERSITY
+  \item In your own words, what is a prefix?
+
+        A prefix is a gathering of strings that include an empty string and substrings that start with the initial character of a string.
+  \item Give an example of a prefix of the string from task 2.
+
+        DENISON
+  \item In your own words, what is a suffix?
+
+        A suffix is a gathering of strings that include an empty string and substrings that ends with the last character of a string.
+  \item Give an example of a suffix of the string from task 2.
+
+        CS234
+  \item Is the empty string a prefix, substring, and/or suffix of the string from task 2? If so, which?
+
+        The empty string can be a prefix, substring, and a suffix of the string from task 2 at the same time.
+  \item In your own words, what is a language?
+
+
+        A language is a set constituted with all existing strings over a specific alphabet as an element of that set.
+
+  \item Give your own example of a language containing at least 3 elements.
+
+        Over $\Sigma$ = \{x, y, z\}, the language \{s : s has length 3\} is \{xyz, xzy, yxz, yzx, zxy, zyx\}
+  \item List the first 3 elements of the language from task 13 in shortlex order.
+
+        xyz, xzy, yxz
+
+
+\end{enumerate}
+
+\section*{3 \quad Counting}
+
+\begin{enumerate}
+  \item In your own words, what is the multiplication rule?
+
+        The multiplication rule is a rule of calculating the numbers of all possible cases that could exist.
+  \item Give your own example of counting something using the multiplication rule.
+
+        Counting all possible cases of creating a fruit dessert basket with an orange, a pineapple, and an apple.
+  \item How is the factorial function mathematically defined?
+
+        $n! = n \times (n-1) \times \ldots \times 1$
+  \item What does the factorial function count?
+
+        The number of ways of making arrangements without repeats and considering that order matters.
+  \item Give your own example of counting something using factorials.
+
+        Counting the number of ways to rearrange five newly released cars from different brands in a line for the Seoul Mobility Show.
+  \item In your own words, explain how the division described in chapter A. 4 accounts for overcounting.
+
+        The division accounts for overcounting by ruling out the cases that are able to be considered duplicates or repetition.
+  \item How are binomial coefficients mathematically defined? (A binomial coefficient is just the proper term for " $n$ choose $k$ ", i.e., $\binom{n}{k}$.)
+
+        $\binom{n}{k}=\frac{n \times(n-1) \times \ldots \times(n-k+1)}{1 \times 2 \times \ldots k}=\frac{n!}{(n-k)!k!}$
+  \item What do binomial coefficients count?
+
+        Binomial coefficients count the number of ways to choose exactly k items without repetition from among n choices.
+  \item Give your own example of counting something using binomial coefficients.
+
+        Counting the number of ways to choose the starting eleven for a soccer match from 23 players constituting the roster.
+\end{enumerate}
+
+\section*{References}
+\url{https://www.unitconverters.net/length/km-to-miles.htm}
+
+\end{document}

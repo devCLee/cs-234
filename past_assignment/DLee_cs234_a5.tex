@@ -1,0 +1,243 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{amsthm}
+\graphicspath{ {./CS-234/} }
+
+\title{Assignment 5 - Asymptotics}
+
+\author{CS 234}
+\date{Daniel Lee}
+
+
+\begin{document}
+\maketitle
+
+\section*{1 \quad Asymptotic Proofs}
+
+\begin{enumerate}[label={}]
+      \item Prove the following by giving constants and then showing that the inequalities hold:
+
+
+            D.4 $2 n^2+4 n=O\left(n^2\right)$
+            \begin{proof}
+                  Let $n$ be an arbitrary real number that is at least 4.\\
+                  Then the following inequality holds:
+                  $$
+                        \begin{aligned}
+                              2n^2+4n & \leq 2 n^2+ n^2
+                                      & {\left[n \geq 4\right] } \\
+                                      & = 3 n^2 .
+                        \end{aligned}
+                  $$
+                  Thus $2 n^2+4n \leq 3 n^2$, so picking $n_0=4$ and $c=3$ witnesses \\$\exists n_0, c>0 .\quad \forall n \geq n_0 .\quad 2 n^2+4n \leq c \cdot n^2$.\\
+                        Thus, by the definition of big-O, $2 n^2+4n \in O\left(n^2\right)$.\\
+            \end{proof}
+            D.5 $3 n^2-4 n+5=O\left(n^2\right)$
+            \begin{proof}
+                  Let $n$ be an arbitrary real number that is at least 1.\\
+                  Then the following inequality holds:
+                  $$
+                        \begin{aligned}
+                              3n^2-4n+5 & \leq 3n^2+n^2+5n^2
+                                        & {\left[\text { as } -4n \leq n^2 \text { and } 5 \leq 5n^2 \text { for all } n \geq 1\right] } \\
+                                        & = 9 n^2 .
+                        \end{aligned}
+                  $$
+                  Thus $3 n^2-4 n+5 \leq 9 n^2$, so picking $n_0=1$ and $c=9$ witnesses \\$\exists n_0, c>0 .\quad \forall n \geq n_0 .\quad 3 n^2-4 n+5 \leq c \cdot n^2$.\\
+                        Thus, by the definition of big-O, $3 n^2-4 n+5 \in O\left(n^2\right)$.\\
+            \end{proof}
+            \newpage
+
+            D.9 $4 n^2-3 n=\Omega\left(n^2\right)$
+            \begin{proof}
+                  Let $n$ be an arbitrary real number that is at least 1 and let $c$ be 1.\\
+                  We want to show that there exists $n_0, c > 0$ such that for all $n\geq n_0$ we have that $4 n^2-3 n\geq c \cdot n^2$.\\
+                  Observe the following inequality:\\
+                  $$
+                        \begin{aligned}
+                              4 n^2-3 n=n(4 n-3) & \geq c \cdot n \cdot n = n^2 \quad[c=1]. \\
+                        \end{aligned}
+                  $$
+
+                  Since we initially assumed that $n$ is an arbitrary real number that is at least 1, we know by arithmetic that
+                  $$
+                        \begin{aligned}
+                              4 n-3 & \geq n \quad[\text { math }].
+                        \end{aligned}
+                  $$
+                  Therefore,
+                  $$
+                        \begin{aligned}
+                              3 (n-1) & \geq 0 \quad[\text { math }]. \\
+                        \end{aligned}
+                  $$
+
+                  Thus picking $n_0=1$ and $c=1$ witnesses \\$\exists n_0, c>0 .\quad \forall n \geq n_0 .\quad 4 n^2-3 n \geq c \cdot n^2$.\\
+                        Thus, by the definition of big-$\Omega$, $4 n^2-3 n \in \Omega\left(n^2\right)$.\\
+            \end{proof}
+            D.10 $n^2-2 n+3=\Omega\left(n^2\right)$
+            \begin{proof}
+                  Let $n$ be an arbitrary real number that is at least 1 and let $c$ be $\frac{1}{2}$.\\
+                  We want to show that there exists $n_0, c > 0$ such that for all $n\geq n_0$ we have that $n^2-2 n+3 \geq c \cdot n^2$.\\
+                  Observe the following inequality:\\
+                  $$
+                        \begin{aligned}
+                               & n^2-2 n+3 \geq c \cdot n \cdot n =\frac{1}{2} \cdot n^2 \quad\left[c=\frac{1}{2}\right].
+                        \end{aligned}
+                  $$
+                  Therefore, by arithmetics, we know that
+                  $$
+                        \begin{aligned}
+                               & \frac{1}{2} n^2-2 n+3 \geq 0 \quad[\text { math }].
+                        \end{aligned}
+                  $$
+                  We can rewrite the above mathematical expression as
+                  $$
+                        \begin{aligned}
+                               & \frac{1}{2}\left(n^2-4 n\right)+3 \geq 0 \quad[\text { math }].
+                        \end{aligned}
+                  $$
+                  Therefore, by arithmetics, we know that
+                  $$
+                        \begin{aligned}
+                               & \frac{1}{2}(n-2)^2-2+3=\frac{1}{2}(n-2)^2+1 \geq 0 \quad[\text { math }].
+                        \end{aligned}
+                  $$
+
+                  Thus picking $n_0=1$ and $c=\frac{1}{2}$ witnesses \\$\exists n_0, c>0 .\quad \forall n \geq n_0 .\quad n^2-2 n+3 \geq c \cdot n^2$.\\
+                        Thus, by the definition of big-$\Omega$, $n^2-2 n+3 \in \Omega\left(n^2\right)$.\\
+            \end{proof}
+            \newpage
+
+            D.13 $n+8=\Theta(n)$
+            \begin{proof}
+                  To show this, by definition of big-$\Theta$, it suffices to show $n+8 \in O\left(n\right)$ and $n+8 \in \Omega\left(n\right)$.\\
+                  Let $n$ be an arbitrary real number that is at least 1.\\
+                  Then the following inequality holds:
+                  $$
+                        \begin{aligned}
+                              n+8 & \leq n+8n
+                                  & {\left[n \geq 1\right] } \\
+                                  & = 9n .
+                        \end{aligned}
+                  $$
+                  Thus $n+8 \leq 9n$, so picking $n_0=1$ and $c_1=9$ witnesses \\$\exists n_0, c_1>0 .\quad \forall n \geq n_0 .\quad n+8 \leq c_1 \cdot n$.\\
+                        Thus, by the definition of big-O, $n+8 \in O\left(n\right)$.\\
+                        Also, let $n$ be an arbitrary real number that is at least 1 and let $c_2$ be 1. Observe the following inequality:
+                        $$
+                              \begin{aligned}
+                                    n+8 & \geq n
+                                        & {\left[n \geq 1\right] }. \\
+                              \end{aligned}
+                        $$
+                        Thus picking $n_0=1$ and $c_2=1$ witnesses \\$\exists n_0, c_2>0 .\quad \forall n \geq n_0 .\quad n+8 \geq c_2 \cdot n$.\\
+                        Thus, by the definition of big-$\Omega$, $n+8 \in \Omega\left(n\right)$.\\
+                        Finally, because both $n+8 \in O\left(n\right)$ and $n+8 \in \Omega\left(n\right)$, it follows that $n+8\in\Theta(n)$ by definition.\\
+            \end{proof}
+
+            D.14 $n^2+2 n=\Theta\left(n^2\right)$
+            \begin{proof}
+                  To show this, by definition of big-$\Theta$, it suffices to show $n^2+2n \in O\left(n^2\right)$ and $n^2+2n \in \Omega\left(n^2\right)$.\\
+                  Let $n$ be an arbitrary real number that is at least 1.\\
+                  Then the following inequality holds:
+                  $$
+                        \begin{aligned}
+                              n^2+2 n & \leq n^2+2 n^2
+                                      & {\left[n \geq 1\right] } \\
+                                      & = 3n^2 .
+                        \end{aligned}
+                  $$
+                  Thus $n^2+2 n \leq 3n^2$, so picking $n_0=1$ and $c_1=3$ witnesses \\$\exists n_0, c_1>0 .\quad \forall n \geq n_0 .\quad n^2+2 n \leq c_1 \cdot n^2$.\\
+                        Thus, by the definition of big-O, $n^2+2 n \in O\left(n^2\right)$.\\
+                        Also, let $n$ be an arbitrary real number that is at least 1 and let $c_2$ be 1. Observe the following inequalities:
+                        $$
+                              \begin{aligned}
+                                    n^2+2 n & \geq n^2
+                                            & {\left[n \geq 1\right] }. \\
+                              \end{aligned}
+                        $$
+                        By arithmetic, we know that
+                        $$
+                              \begin{aligned}
+                                     & 2n \geq 0 \quad [\text { math }]. \\
+                              \end{aligned}
+                        $$
+                        Thus picking $n_0=1$ and $c_2=1$ witnesses \\$\exists n_0, c_2>0 .\quad \forall n \geq n_0 .\quad n^2+2 n \geq c_2 \cdot n^2$.\\
+                        Thus, by the definition of big-$\Omega$, $n^2+2 n \in \Omega\left(n^2\right)$.\\
+                        Finally, because both $n^2+2 n \in O\left(n^2\right)$ and $n^2+2 n \in \Omega\left(n^2\right)$, it follows that $n^2+2 n\in\Theta(n^2)$ by definition.\\
+            \end{proof}
+
+            \newpage
+
+            D.16 $n^2=o\left(n^3\right)$
+            \begin{proof}
+                  Let $c$ be an arbitrary positive real number.\\
+                  Then let $n$ be an arbitrary real number that is strictly greater than $\frac{1}{c}$. Observe the following inequalities that they hold.\\
+                  $$
+                        \begin{aligned}
+                              c \cdot n^3 & >c \cdot \frac{1}{c} \cdot n^2 &  & {\left[n>\frac{1}{c}\right] } \\
+                                          & =n^2                           &  & {[\text { math }]. }
+                        \end{aligned}
+                  $$
+
+                  Thus picking an arbitrary positive real number $n_0$ to be strictly greater than $\frac{1}{c}$ witnesses that $\forall c>0 . \quad \exists n_0>0 . \quad \forall n \geq n_0 . \quad$ $n^2$ $< c \cdot n^3$. By the definition of little-$o$, this means that $n^2 \in o\left(n^3\right)$.\\
+            \end{proof}
+            D.17 $100 n^3=o\left(n^4\right)$
+            \begin{proof}
+                  Let $c$ be an arbitrary positive real number.\\
+                  Then let $n$ be an arbitrary real number that is strictly greater than $\frac{100}{c}$. Observe the following inequalities that they hold.\\
+                  $$
+                        \begin{aligned}
+                              c \cdot n^4 & >c \cdot \frac{100}{c} \cdot n^3 &  & {\left[n>\frac{100}{c}\right] } \\
+                                          & =100n^3                          &  & {[\text { math }]. }
+                        \end{aligned}
+                  $$
+
+                  Thus picking an arbitrary positive real number $n_0$ to be strictly greater than $\frac{100}{c}$ witnesses that $\forall c>0 . \quad \exists n_0>0 . \quad \forall n \geq n_0 . \quad$ $100 n^3$ $< c \cdot n^4$. By the definition of little-$o$, this means that $100n^3 \in o\left(n^4\right)$.\\
+            \end{proof}
+            D.18 $n^5=\omega\left(n^4\right)$
+            \begin{proof}
+                  Let $c$ be an arbitrary positive real number. Then let $n$ be an arbitrary real number that is strictly greater than $c$.
+                  We want to show that for all $c>0$, there exists a constant $n_0 > 0$ such that for all $n\geq n_0$, $n^5>c \cdot n^4$.
+                  Observe the following inequalities that they hold.
+                  $$
+                        \begin{aligned}
+                              n^5                   & >c \cdot n^4 \quad {\left[n>c>0\right] } \\
+                              \longleftrightarrow n & >c \quad[\text { math }].
+                        \end{aligned}
+                  $$
+                  We earlier assumed that $n>c$ so we can observe that for all $n\geq n_0$, $n\geq n_0>c$.
+                  Thus picking $n_0$ to be strictly greater than $c$ witnesses that $\forall c>0$. $\exists n_0>0$. $\forall n \geq n_0$. $n^5>c \cdot n^4$.\\
+                  By the definition of little-$\omega$, it follows that $n^5 \in \omega\left(n^4\right)$.\\
+            \end{proof}
+            \newpage
+
+            D.19 $10 n^3=\omega\left(n^2\right)$
+            \begin{proof}
+                  Let $c$ be an arbitrary positive real number.
+                  Then let $n$ be an arbitrary real number that is strictly greater than $\frac{c}{10}$.
+                  We want to show that for all $c>0$, there exists a constant $n_0 > 0$ such that for all $n\geq n_0$, $10 n^3>c \cdot n^2$.
+                  Observe the following inequalities that they hold.
+                  $$
+                        \begin{aligned}
+                              10 n^3                & >c \cdot n^2 \quad {\left[n>\frac{c}{10}>0\right] } \\
+                              \longleftrightarrow n & >\frac{c}{10} \quad[\text { math }].
+                        \end{aligned}
+                  $$
+                  We earlier assumed that $n>\frac{c}{10}$ so we can observe that for all $n\geq n_0$, $n\geq n_0>\frac{c}{10}$.
+                  Thus picking $n_0$ to be strictly greater than $\frac{c}{10}$ witnesses that $\forall c>0$. $\exists n_0>0$. $\forall n \geq n_0$. $10 n^3>c \cdot n^2$.\\
+                  By the definition of little-$\omega$, it follows that $10 n^3 \in \omega\left(n^2\right)$.\\
+            \end{proof}
+
+\end{enumerate}
+\end{document}

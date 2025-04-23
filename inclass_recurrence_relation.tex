@@ -1,0 +1,252 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{amsthm}
+\usepackage{parskip}
+\graphicspath{ {./CS-234/} }
+
+\title{Inclass Recurrence Relation Proofs}
+
+\author{CS 234}
+\date{Daniel Lee}
+
+
+\begin{document}
+\maketitle
+
+\section*{1 \quad Green}
+
+\begin{enumerate}[label={}]
+      \item Green Recursion Tree Method
+      \item $$
+                  W(n)= \begin{cases}0 & n \leq 1 \\ 8 \cdot W(n / 4)+n & n>1\end{cases}
+            $$
+
+            \begin{proof}
+                  Consider unrolling the call tree for $W(n)$. This tree will have:
+                  \begin{itemize}
+                        \item $\log _4(n)+1$ rows because the argument is divided by 4 until it is less than or equal to 1
+                        \item $8^r$ nodes in row $r$ (0-indexed) because having 8 recursive call children from each node multiplies the number of nodes each row by 8.
+                        \item $\frac{n}{4^r}$ work done in each node of row $r$, because the original argument $n$ will have been divded by 4 a total $r$ times before it is an argument to a row-$r$ recursive call, and that argument is precisely the non-recursive work done
+                  \end{itemize}
+                  Because 0 work is done in the last row, we can ignore the last row and consider there to only be $\log _4(n)$ rows.
+
+                  Putting these values together, the work done is $\sum_{r=0}^{\log _4(n)-1} 8^r \cdot \frac{n}{4^r}$, which can be algebraically simplified as follows:
+
+                  $$
+                        \begin{aligned}
+                              \sum_{r=0}^{\log _4 (n)-1} 8^r \cdot \frac{n}{4^r} & =n \cdot \sum_{r=0}^{\log _4 (n)-1}\left(\frac{8^r}{4^r}\right) \\
+                                                                                 & =n \cdot \sum_{r=0}^{\log _4 (n)-1} 2^r                         \\
+                                                                                 & =n\left(\frac{2^{\log _4 (n)}-1}{2-1}\right)                    \\
+                                                                                 & =n\left(n^{\log _4 (2)}-1\right)                                \\
+                                                                                 & =n\left(n^{\frac{\log _2 2}{\log _2 4}}-1\right)                \\
+                                                                                 & =n\left(n^{\frac{1}{2}}-1\right)                                \\
+                                                                                 & =n^{\frac{3}{2}}-n
+                        \end{aligned}
+                  $$
+
+
+                  Since the total work $n^{\frac{3}{2}}-n$ is always less than or equal to $n^{\frac{3}{2}}$ for $n \geq 1$, it follows that $W(n)=n^{\frac{3}{2}}-n \in O\left(n^{\frac{3}{2}}\right)$.
+
+            \end{proof}
+
+            \newpage
+
+      \item Green Induction
+            \begin{proof}
+                  This asymptotic bound can be shown by inducting with the inductive predicate $P(n):=W(n) \leq 2n^{\frac{3}{2}} - n$.\\
+
+                  \textbf{Base case} $n=2$: If $n=2$, then $W(n)$ satisfies the following chain of equalities:
+
+                  $$
+                        \begin{array}{rlrl}
+                              W(2) & =8 \cdot W(\frac{1}{2})+2 & W \text { def }    \\
+                                   & =2                        & W(\frac{1}{2}) = 0 \\
+                        \end{array}
+                  $$
+
+
+                  Thus $W(2) \leq 2 \cdot 2^{\frac{3}{2}} - 2$, which satisfies $W(2)$.\\
+
+                  \textbf{Inductive case :} Suppose that $P(j)$ holds for all $0 \leq j \leq k$ for an arbitrary $k$. We now want to show $P(k+1)$.
+
+                  Consider $W(k+1)$. This value satisfies the following chain of inequalities:
+
+                  $$
+                        \begin{aligned}
+                              W(k+1) & =8 \cdot W\left(\frac{k+1}{4}\right)+(k+1)                                                       &  & T \text { def }   \\
+                                     & \leq 8 \cdot\left(2 \cdot \left(\frac{k+1}{4}\right)^{\frac{3}{2}} - \frac{k+1}{4}\right) +(k+1) &  & I H               \\
+                                     & =16 \cdot \frac{(k+1)^{\frac{3}{2}}}{4^{\frac{3}{2}}}-2(k+1) + (k+1)                             &  & \text { algebra } \\
+                                     & =16 \cdot \frac{(k+1)^{\frac{3}{2}}}{2^{2 \cdot \frac{3}{2}}}-(k+1)                              &  & \text { algebra } \\
+                                     & =16 \cdot \frac{(k+1)^{\frac{3}{2}}}{2^3}-(k+1)                                                  &  & \text { algebra } \\
+                                     & =2(k+1)^{\frac{3}{2}}-(k+1)                                                                      &  & \text { algebra }
+                        \end{aligned}
+                  $$
+
+
+
+                  Thus $W(k+1) \leq 2(k+1)^{\frac{3}{2}}-(k+1)$, which satisfies $P(k+1)$.\\
+
+                  \textbf{Conclusion :} As a result of induction, we find that $P(n)$ holds for all $n \geq 2$. That is, $\forall n \geq 2 . W(n) \leq 2n^{\frac{3}{2}} - n$. By definition, it is therefore the case that $W(n) \in O\left(n^{\frac{3}{2}}\right)$.
+            \end{proof}
+
+\end{enumerate}
+
+\newpage
+
+\section*{2 \quad Blue}
+
+\begin{enumerate}[label={}]
+      \item Blue Recursion Tree Method
+      \item $$
+                  S(k)= \begin{cases}0 & k \leq 1 \\ 4 \cdot S(k / 2)+k^2 & k>1\end{cases}
+            $$
+
+            \begin{proof}
+                  Consider unrolling the call tree for $S(k)$. This tree will have:
+                  \begin{itemize}
+                        \item $\log _2(k)+1$ rows because the argument is divided by 2 until it is less than or equal to 1
+                        \item $4^r$ nodes in row $r$ (0-indexed) because having 4 recursive call children from each node multiplies the number of nodes each row by 4.
+                        \item $\frac{k^2}{4^r}$ work done in each node of row $r$, because the original argument $k$ will have been divded by 2 a total $r$ times before it is an argument to a row-$r$ recursive call, yielding $\frac{k}{2^r}$ and the square of that argument is the non-recursive work done
+                  \end{itemize}
+                  Because 0 work is done in the last row, we can ignore the last row and consider there to only be $\log _2(k)$ rows.
+
+                  Putting these values together, the work done is $\sum_{r=0}^{\log _2(k)-1} 4^r \cdot \frac{k^2}{4^r}$, which can be algebraically simplified as follows:
+
+                  $$
+                        \begin{aligned}
+                              \sum_{r=0}^{\log _2 (k)-1} 4^r \cdot \frac{k^2}{4^r} & =\sum_{r=0}^{\log _2 (k)-1}k^2   \\
+                                                                                   & =k^2\left(\log _2 (k)-1+1\right) \\
+                                                                                   & =k^2 \log _2 k
+                        \end{aligned}
+                  $$
+
+
+                  Since the total work $k^2 \log _2 k$ is always less than or equal to $k^2 \log _2 k$ for $k \geq 1$, it follows that $S(k)=k^2 \log _2 k \in O\left(k^2 \log _2 k\right)$.
+
+            \end{proof}
+
+            \newpage
+
+      \item Blue Induction
+            \begin{proof}
+                  This asymptotic bound can be shown by inducting with the inductive predicate $P(k):=S(k) \leq k^2 \log _2 k$.\\
+
+                  \textbf{Base case} $k=2$: If $k=2$, then $S(k)$ satisfies the following chain of equalities:
+
+                  $$
+                        \begin{array}{rlrl}
+                              S(2) & =4 \cdot S(1)+4 & S \text { def } \\
+                                   & =4              & S(1) = 0        \\
+                        \end{array}
+                  $$
+
+
+                  Thus $S(2) \leq 4 \log _2 2 = 4$, which satisfies $S(2)$.\\
+
+                  \textbf{Inductive case :} Suppose that $P(j)$ holds for all $0 \leq j \leq q$ for an arbitrary $q$. We now want to show $P(q+1)$.
+
+                  Consider $S(q+1)$. This value satisfies the following chain of inequalities:
+                  $$
+                        \begin{array}{rlr}
+                              S(q+1) & =4 S\left(\frac{q+1}{2}\right)+(q+1)^2                           & \text { S def }   \\
+                                     & \leq 4\left(\frac{q+1}{2}\right)^2 \log _2 \frac{q+1}{2}+(q+1)^2 & \text { IH }      \\
+                                     & =(q+1)^2\left(\log _2 \frac{q+1}{2}\right)+(q+1)^2               & \text { algebra } \\
+                                     & =(q+1)^2\left(\log _2(q+1)-\log _2 2\right)+(q+1)^2              & \text { algebra } \\
+                                     & =(q+1)^2 \log _2(q+1)-(q+1)^2+(q+1)^2                            & \text { algebra } \\
+                                     & =(q+1)^2 \log _2(q+1)                                            & \text { algebra }
+                        \end{array}
+                  $$
+
+
+
+                  Thus $S(q+1) \leq (q+1)^2 \log _2(q+1)$, which satisfies $P(q+1)$.\\
+
+                  \textbf{Conclusion :} As a result of induction, we find that $P(k)$ holds for all $k \geq 2$. That is, $\forall k \geq 2 . S(k) \leq k^2 \log _2 k$. By definition, it is therefore the case that $S(k) \in O\left(k^2 \log _2 k\right)$.
+            \end{proof}
+
+\end{enumerate}
+
+\newpage
+
+\section*{3 \quad Red}
+
+\begin{enumerate}[label={}]
+      \item Red Recursion Tree Method
+      \item $$
+                  T(x)= \begin{cases}0 & x \leq 1 \\ 100 \cdot T(x / 5)+x^3 & x>1\end{cases}
+            $$
+
+            \begin{proof}
+                  Consider unrolling the call tree for $S(k)$. This tree will have:
+                  \begin{itemize}
+                        \item $\log _5(x)+1$ rows because the argument is divided by 5 until it is less than or equal to 1
+                        \item $100^r$ nodes in row $r$ (0-indexed) because having 100 recursive call children from each node multiplies the number of nodes each row by 100.
+                        \item $\frac{x^3}{125^r}$ work done in each node of row $r$, because the original argument $x$ will have been divded by 5 a total $r$ times before it is an argument to a row-$r$ recursive call, yielding $\frac{x}{5^r}$ and the cube of that argument is the non-recursive work done
+                  \end{itemize}
+                  Because 0 work is done in the last row, we can ignore the last row and consider there to only be $\log _5(x)$ rows.
+
+                  Putting these values together, the work done is $\sum_{r=0}^{\log _5(x)-1} 100^r \cdot \frac{x^3}{125^r}$, which can be algebraically simplified as follows:
+
+                  $$
+                        \begin{aligned}
+                              \sum_{r=0}^{\log _5 (x)-1} 100^r \cdot \frac{x^3}{125^r} & =x^3 \cdot \sum_{r=0}^{\log _5 (x)-1}\left(\frac{100}{125}\right)^r     \\
+                                                                                       & =x^3 \cdot \sum_{r=0}^{\log _5 (x)-1}\left(\frac{4}{5}\right)^r         \\
+                                                                                       & =x^3 \cdot \frac{1-\left(\frac{4}{5}\right)^{\log _5 x}}{1-\frac{4}{5}} \\
+                                                                                       & =5 x^3\left(1-\left(\frac{4}{5}\right)^{\log _5 x}\right)               \\
+                                                                                       & =5 x^3\left(1-\frac{4^{\log _5 x}}{5^{\log _5 x}}\right)                \\
+                                                                                       & =5 x^3\left(1-\frac{x^{\log _5 4}}{x^{\log _5 5}}\right)                \\
+                                                                                       & =5 x^3\left(1-x^{\log _5 (4)-1}\right)                                  \\
+                                                                                       & =5 x^3-5 \cdot x^{3+\log _5 (4)-1}                                      \\
+                                                                                       & =5 x^3-5 \cdot x^{2+\log _5 4}
+                        \end{aligned}
+                  $$
+
+
+                  Since the total work $5 x^3-5 \cdot x^{2+\log _5 4}$ is always less than or equal to $5 x^3$ for $x \geq 1$ because $0 < \log _5 4 < 1$, it follows that $T(x)=5 x^3-5 \cdot x^{2+\log _5 4} \in O\left(x^3\right)$.
+
+            \end{proof}
+
+            \newpage
+
+      \item Red Induction
+            \begin{proof}
+                  This asymptotic bound can be shown by inducting with the inductive predicate $P(x):=T(x) \leq 5 x^3$.\\
+
+                  \textbf{Base case} $x=2$: If $x=2$, then $T(x)$ satisfies the following chain of equalities:
+
+                  $$
+                        \begin{array}{rlrl}
+                              T(2) & =100 \cdot T(\frac{2}{5})+2^3 & T \text { def }    \\
+                                   & =8                            & T(\frac{2}{5}) = 0 \\
+                        \end{array}
+                  $$
+
+
+                  Thus $T(2) \leq 5 \cdot 2^3$, which satisfies $T(2)$.\\
+
+                  \textbf{Inductive case :} Suppose that $P(j)$ holds for all $0 \leq j \leq k$ for an arbitrary $k$. We now want to show $P(k+1)$.
+
+                  Consider $T(k+1)$. This value satisfies the following chain of inequalities:
+
+                  $$\begin{aligned} T(k+1) & =100 \cdot T\left(\frac{k+1}{5}\right)+(k+1)^3 & & T \text { def } \\ & \leq 100 \cdot 5 \cdot\left(\frac{k+1}{5}\right)^3+(k+1)^3 & & I H \\ & =500 \cdot \frac{(k+1)^3}{125}+(k+1)^3 & & \text { algebra } \\ & =4(k+1)^3+(k+1)^3 & & \text { algebra } \\ & =5(k+1)^3 & & \text { algebra }\end{aligned}$$
+
+
+
+                  Thus $T(k+1) \leq 5(k+1)^3$, which satisfies $P(k+1)$.\\
+
+                  \textbf{Conclusion :} As a result of induction, we find that $P(x)$ holds for all $x \geq 2$. That is, $\forall x \geq 2 . T(x) \leq 5 x^3$. By definition, it is therefore the case that $T(x) \in O\left(x^3\right)$.
+            \end{proof}
+
+\end{enumerate}
+
+\end{document}

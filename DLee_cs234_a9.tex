@@ -1,0 +1,226 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{amsthm}
+\usepackage{parskip}
+\graphicspath{ {./CS-234/} }
+
+\title{Assignment 9 - Recurrences}
+
+\author{CS 234}
+\date{Daniel Lee}
+
+
+\begin{document}
+\maketitle
+
+\section*{1 \quad Recurrence Solving}
+
+\begin{enumerate}[label={}]
+      \item 1. $T(n)= \begin{cases}0 & n \leq 1 \\ 3 T\left(\frac{n}{5}\right)+n & n>1\end{cases}$
+
+            \begin{proof}
+                  Consider unrolling the call tree for $T(n)$. This tree will have:
+                  \begin{itemize}
+                        \item $\log _5(n)+1$ rows because the argument is divided by 5 until it is less than or equal to 1
+                        \item $3^r$ nodes in row $r$ (0-indexed) because having 3 recursive call children from each node multiplies the number of nodes each row by 3.
+                        \item $\frac{n}{5^r}$ work done in each node of row $r$, because the original argument $n$ will have been divded by 5 a total $r$ times before it is an argument to a row-$r$ recursive call, and that argument is precisely the non-recursive work done
+                  \end{itemize}
+                  Because 0 work is done in the last row, we can ignore the last row and consider there to only be $\log _5(n)$ rows.
+
+                  Putting these values together, the work done is $\sum_{r=0}^{\log _5(n)-1} 3^r \cdot \frac{n}{5^r}$, which can be algebraically simplified as follows:
+
+                  $$
+                        \begin{aligned}
+                              \sum_{r=0}^{\log _5(n)-1} 3^r \cdot \frac{n}{5^r} & =n \cdot \sum_{r=0}^{\log _5(n)-1}\left(\frac{3}{5}\right)^r                       \\
+                                                                                & =n \cdot \left(\frac{1-\left(\frac{3}{5}\right)^{\log _5 n}}{1-\frac{3}{5}}\right) \\
+                                                                                & =\frac{5 n}{2}\left(1-\frac{3^{\log _5 n}}{5^{\log _5 n}}\right)                   \\
+                                                                                & =\frac{5 n}{2}\left(1-\frac{n^{\log _5 3}}{n^{\log _5 5}}\right)                   \\
+                                                                                & =\frac{5 n}{2}\left(1-n^{\log _5 (3)-1}\right)                                     \\
+                                                                                & =\frac{5 n}{2}-\frac{5}{2} \cdot n^{1+\log _5(3)-1}                                \\
+                                                                                & =\frac{5 n}{2}-\frac{5}{2} \cdot n^{\log _5 3}
+                        \end{aligned}
+                  $$
+
+
+                  Since the total work $\frac{5 n}{2}-\frac{5}{2} \cdot n^{\log _5 3}$ is always less than or equal to $\frac{5 n}{2}$ for $n \geq 1$, it follows that $T(n)=\frac{5 n}{2}-\frac{5}{2} \cdot n^{\log _5 3} \in O\left(n\right)$.
+
+            \end{proof}
+
+
+            \newpage
+
+
+      \item 2. $T(n)= \begin{cases}0 & n \leq 1 \\ 8 T\left(\frac{n}{2}\right)+n^3 & n>1\end{cases}$
+
+            \begin{proof}
+                  Consider unrolling the call tree for $T(n)$. This tree will have:
+                  \begin{itemize}
+                        \item $\log _2(n)+1$ rows because the argument is divided by 2 until it is less than or equal to 1
+                        \item $8^r$ nodes in row $r$ (0-indexed) because having 8 recursive call children from each node multiplies the number of nodes each row by 8.
+                        \item $\frac{n^3}{8^r}$ work done in each node of row $r$, because the original argument $n$ will have been divded by 2 a total $r$ times before it is an argument to a row-$r$ recursive call, yielding $\frac{n}{2^r}$ and the cube of that argument is the non-recursive work done
+                  \end{itemize}
+                  Because 0 work is done in the last row, we can ignore the last row and consider there to only be $\log _2(n)$ rows.
+
+                  Putting these values together, the work done is $\sum_{r=0}^{\log _2(n)-1} 8^r \cdot \frac{n^3}{8^r}$, which can be algebraically simplified as follows:
+
+                  $$
+                        \begin{aligned}
+                              \sum_{r=0}^{\log _2(n)-1} 8^r \cdot \frac{n^3}{8^r} & =\sum_{r=0}^{\log _2(n)-1}n^3        \\
+                                                                                  & =n^3 \left(\log _2 (n) -1 + 1\right) \\
+                                                                                  & = n^3\log_2 n                        \\
+                        \end{aligned}
+                  $$
+
+
+                  Since the total work $n^3\log_2 n$ is always less than or equal to $n^3\log_2 n$ for $n \geq 1$, it follows that $T(n)=n^3\log_2 n \in O\left(n^3\log_2 n\right)$.
+
+            \end{proof}
+
+
+            \newpage
+
+
+      \item 3. $T(n)= \begin{cases}0 & n \leq 1 \\ 5 T\left(\frac{n}{3}\right)+n & n>1\end{cases}$
+
+            \begin{proof}
+                  Consider unrolling the call tree for $T(n)$. This tree will have:
+                  \begin{itemize}
+                        \item $\log _3(n)+1$ rows because the argument is divided by 3 until it is less than or equal to 1
+                        \item $5^r$ nodes in row $r$ (0-indexed) because having 5 recursive call children from each node multiplies the number of nodes each row by 5.
+                        \item $\frac{n}{3^r}$ work done in each node of row $r$, because the original argument $n$ will have been divded by 3 a total $r$ times before it is an argument to a row-$r$ recursive call, and that argument is precisely the non-recursive work done
+                  \end{itemize}
+                  Because 0 work is done in the last row, we can ignore the last row and consider there to only be $\log _3(n)$ rows.
+
+                  Putting these values together, the work done is $\sum_{r=0}^{\log _3(n)-1} 5^r \cdot \frac{n}{3^r}$, which can be algebraically simplified as follows:
+
+                  $$
+                        \begin{aligned}
+                              \sum_{r=0}^{\log _3(n)-1} 5^r \cdot \frac{n}{3^r} & =n \cdot \sum_{r=0}^{\log _3(n)-1}\left(\frac{5}{3}\right)^r                      \\
+                                                                                & =n \cdot\left(\frac{\left(\frac{5}{3}\right)^{\log _3 n}-1}{\frac{5}{3}-1}\right) \\
+                                                                                & =\frac{3 n}{2}\left(\frac{5^{\log _3 n}}{3^{\log _3 n}}-1\right)                  \\
+                                                                                & =\frac{3 n}{2}\left(\frac{n^{\log _3 5}}{n^{\log _3 3}}-1\right)                  \\
+                                                                                & =\frac{3 n}{2}\left(n^{\log _3(5)-1}-1\right)                                     \\
+                                                                                & =\frac{3}{2} \cdot n^{1+\log _3(5)-1}-\frac{3 n}{2}                               \\
+                                                                                & =\frac{3}{2} \cdot n^{\log _3 5}-\frac{3 n}{2}
+                        \end{aligned}
+                  $$
+
+
+                  Since the total work $\frac{3}{2} \cdot n^{\log _3 5}-\frac{3 n}{2}$ is always less than or equal to $\frac{3}{2} \cdot n^{\log _3 5}$ for $n \geq 1$, it follows that $T(n)=\frac{3}{2} \cdot n^{\log _3 5}-\frac{3 n}{2} \in O\left(n^{\log _3 5}\right)$.
+
+            \end{proof}
+
+
+            \newpage
+
+
+      \item 4. $T(n)= \begin{cases}0 & n \leq 1 \\ 9 T\left(\frac{n}{3}\right)+n^2 & n>1\end{cases}$
+
+            \begin{proof}
+                  Consider unrolling the call tree for $T(n)$. This tree will have:
+                  \begin{itemize}
+                        \item $\log _3(n)+1$ rows because the argument is divided by 3 until it is less than or equal to 1
+                        \item $9^r$ nodes in row $r$ (0-indexed) because having 9 recursive call children from each node multiplies the number of nodes each row by 9.
+                        \item $\frac{n^2}{9^r}$ work done in each node of row $r$, because the original argument $n$ will have been divded by 3 a total $r$ times before it is an argument to a row-$r$ recursive call, yielding $\frac{n}{3^r}$ and the square of that argument is the non-recursive work done
+                  \end{itemize}
+                  Because 0 work is done in the last row, we can ignore the last row and consider there to only be $\log _3(n)$ rows.
+
+                  Putting these values together, the work done is $\sum_{r=0}^{\log _3(n)-1} 9^r \cdot \frac{n^2}{9^r}$, which can be algebraically simplified as follows:
+
+                  $$
+                        \begin{aligned}
+                              \sum_{r=0}^{\log _3 (n)-1} 9^r \cdot \frac{n^2}{9^r} & =\sum_{r=0}^{\log _3 (n)-1}n^2   \\
+                                                                                   & =n^2\left(\log _3 (n)-1+1\right) \\
+                                                                                   & =n^2 \log _3 n
+                        \end{aligned}
+                  $$
+
+
+                  Since the total work $n^2 \log _3 n$ is always less than or equal to $n^2 \log _3 n$ for $n \geq 1$, it follows that $T(n)=n^2 \log _3 n \in O\left(n^2 \log _3 n\right)$.
+
+            \end{proof}
+
+
+            \newpage
+
+
+      \item 5. $T(n)= \begin{cases}0 & n \leq 1 \\ 10 T\left(\frac{n}{2}\right)+n^3 & n>1\end{cases}$
+
+            \begin{proof}
+                  Consider unrolling the call tree for $T(n)$. This tree will have:
+                  \begin{itemize}
+                        \item $\log _2(n)+1$ rows because the argument is divided by 2 until it is less than or equal to 1
+                        \item $10^r$ nodes in row $r$ (0-indexed) because having 10 recursive call children from each node multiplies the number of nodes each row by 10.
+                        \item $\frac{n^3}{8^r}$ work done in each node of row $r$, because the original argument $n$ will have been divded by 2 a total $r$ times before it is an argument to a row-$r$ recursive call, yielding $\frac{n}{2^r}$ and the cube of that argument is the non-recursive work done
+                  \end{itemize}
+                  Because 0 work is done in the last row, we can ignore the last row and consider there to only be $\log _2(n)$ rows.\\
+                  Putting these values together, the work done is $\sum_{r=0}^{\log _2(n)-1} 10^r \cdot \frac{n^3}{8^r}$, which can be algebraically simplified as follows:
+
+                  $$
+                        \begin{aligned}
+                              \sum_{r=0}^{\log _2(n)-1} 10^r \cdot \frac{n^3}{8^r} & =n^3 \cdot \sum_{r=0}^{\log _2(n)-1}\left(\frac{10}{8}\right)^r               \\
+                                                                                   & =n^3 \cdot \sum_{r=0}^{\log _2(n)-1}\left(\frac{5}{4}\right)^r                \\
+                                                                                   & =n^3\left(\frac{\left(\frac{5}{4}\right)^{\log _2 n}-1}{\frac{5}{4}-1}\right) \\
+                                                                                   & =4 n^3\left(\left(\frac{5}{4}\right)^{\log _2 n}-1\right)                     \\
+                                                                                   & =4 n^3\left(\frac{5^{\log _2 n}}{4^{\log _2 n}}-1\right)                      \\
+                                                                                   & =4 n^3\left(\frac{n^{\log _2 5}}{n^{\log _2 4}}-1\right)                      \\
+                                                                                   & =
+                              4 n^3\left(n^{\log _2(5)-2}-1\right)
+                              \\
+                                                                                   & =4 n^{3+\log _2(5)-2}-4 n^3                                                   \\
+                                                                                   & =4 n^{1+\log _2 5}-4 n^3
+                        \end{aligned}
+                  $$
+
+
+                  Since the total work $4 n^{1+\log _2 5}-4 n^3$ is always less than or equal to $4 n^{1+\log _2 5}$ for $n \geq 1$, it follows that $T(n)=4 n^{1+\log _2 5}-4 n^3 \in O\left(n^{1+\log _2 5} \right)$.
+
+            \end{proof}
+
+
+            \newpage
+
+
+      \item 6. $T(n)= \begin{cases}0 & n \leq 1 \\ 4 T\left(\frac{n}{4}\right)+n^2 & n>1\end{cases}$
+
+            \begin{proof}
+                  Consider unrolling the call tree for $T(n)$. This tree will have:
+                  \begin{itemize}
+                        \item $\log _4(n)+1$ rows because the argument is divided by 4 until it is less than or equal to 1
+                        \item $4^r$ nodes in row $r$ (0-indexed) because having 4 recursive call children from each node multiplies the number of nodes each row by 4.
+                        \item $\frac{n^2}{16^r}$ work done in each node of row $r$, because the original argument $n$ will have been divded by 4 a total $r$ times before it is an argument to a row-$r$ recursive call, yielding $\frac{n}{4^r}$ and the square of that argument is the non-recursive work done
+                  \end{itemize}
+                  Because 0 work is done in the last row, we can ignore the last row and consider there to only be $\log _4(n)$ rows.
+
+                  Putting these values together, the work done is $\sum_{r=0}^{\log _4(n)-1} 4^r \cdot \frac{n^2}{16^r}$, which can be algebraically simplified as follows:
+
+                  $$
+                        \begin{aligned}
+                              \sum_{r=0}^{\log _4(n)-1} 4^r \cdot \frac{n^2}{16^r} & =n^2 \cdot \sum_{r=0}^{\log _4(n)-1}\left(\frac{1}{4}\right)^r                \\
+                                                                                   & =n^2\left(\frac{1-\left(\frac{1}{4}\right)^{\log _4 n}}{1-\frac{1}{4}}\right) \\
+                                                                                   & =\frac{4 n^2}{3}\left(1-\frac{1^{\log _4 n}}{4^{\log _4 n}}\right)            \\
+                                                                                   & =\frac{4 n^2}{3}\left(1-\frac{1}{n^{\log _4 4}}\right)                        \\
+                                                                                   & =\frac{4 n^2}{3}\left(1-\frac{1}{n}\right)                                    \\
+                                                                                   & =\frac{4 n^2}{3}-\frac{4 n}{3}
+                        \end{aligned}
+                  $$
+
+
+                  Since the total work $\frac{4 n^2}{3}-\frac{4 n}{3}$ is always less than or equal to $\frac{4 n^2}{3}$ for $n \geq 1$, it follows that $T(n)=\frac{4 n^2}{3}-\frac{4 n}{3} \in O\left(n^2\right)$.
+
+            \end{proof}
+
+            \newpage
+
+\end{enumerate}
+\end{document}

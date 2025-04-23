@@ -1,0 +1,132 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{amsthm}
+\usepackage{parskip}
+\graphicspath{ {./CS-234/} }
+
+\title{Assignment 7 - Proving a Negative}
+
+\author{CS 234}
+\date{Daniel Lee}
+
+
+\begin{document}
+\maketitle
+
+\section*{1 \quad Proofs on Paper}
+
+\begin{enumerate}[label={}]
+      \item 10.7 Prove that $\log _2 3$ is irrational.
+            \begin{proof}
+                  Suppose for the sake of contradiction that actually $\log _2 3 \in \mathbb{Q}$. Then there must exist some integers $p, q$ where $q \neq 0$ such that $\log _2 3=p / q$. Moreover, since $\log _2 3>0$, we can let $p$ and $q$ both themselves be greater than 0, so $p$ and $q$ are natural numbers at least 1.
+                  Now observe the following:\\
+                  $$
+                        \begin{aligned}
+                               & \log _2 3=p / q \quad \text { [above] }                     \\
+                               & \Leftrightarrow q \log _2 3=p \quad \text { [math] }        \\
+                               & \Leftrightarrow \log _2 3^q=p \quad[\text { math ] }        \\
+                               & \Leftrightarrow 2^{\log _2 3^q}=2^p \quad[\text { math }]   \\
+                               & \Leftrightarrow {3^q}^{\log _2 2}=2^p \quad[\text { math }] \\
+                               & \Leftrightarrow \quad 3^q=2^p \quad[\text { math }] .       \\
+                        \end{aligned}
+                  $$
+                  The above shows that $3^q=2^p$. However, the number that only contains the prime factor 3 cannot be same as the number that only contains the prime factor 2. This is a contradiction.
+                  Since assuming $\log _2 3 \in \mathbb{Q}$ leads to a contradiction, we can conclude $\log _2 3 \notin \mathbb{Q}$, completing the proof.\\
+            \end{proof}
+
+      \item 10.15 Prove that the average of $n$ numbers is at most as large as at least one of the numbers.
+            \begin{proof}
+                  Suppose for the sake of contradiction that actually the average of $n$ numbers is strictly larger than all of the each numbers.\\
+                  We know that we can rewrite this statement as $\frac{\sum_{i=1}^n a_i}{n}>a_k$ for all $1 \leq k \leq n. \quad k \in \mathbb{N}$.\\
+                  Now observe the following:
+                  $$
+                        \begin{aligned}
+                               & n \cdot \frac{\sum_{i=1}^n a_i}{n} >\sum_{k=1}^n a_k \quad \text { [math] }    \\
+                               & \Leftrightarrow \quad \sum_{i=1}^n a_i>\sum_{k=1}^n a_k \quad \text { [math] }
+                        \end{aligned}
+                  $$
+                  The above shows that $\sum_{i=1}^n a_i>\sum_{k=1}^n a_k$, which is clearly false therefore this is a contradiction. Since assuming that the average of $n$ numbers is strictly larger than all of the each numbers leads to a contradiction, we can conclude that the average of $n$ numbers is at most as large as at least one of the numbers, completing the proof.\\
+            \end{proof}
+
+      \item Prove that $\mathcal{P}(\mathbb{N})$ is uncountable.
+            \begin{proof}
+                  Suppose for the sake of contradiction that $\mathcal{P}(\mathbb{N})$ is countable. Then its elements can be completely listed out. Let $N_i$ be the $i^{\text {th}}$ set of natural numbers in such a listing.\\
+                  Consider the following set $S$ :
+                  $$
+                        S=\left\{i \in \mathbb{N}: i \notin N_i\right\}
+                  $$
+                  As every element of set $S$ is a natural number, it must be that $S \subseteq \mathbb{\mathbb{N}}$, and so $S \in \mathcal{P}(\mathbb{N})$ by the definition of powerset. This means that $S$ must be equal to $N_k$ for some natural $k$.\\
+                  However, if $S=N_k$, the following also holds:
+                  $$
+                        \begin{aligned}
+                              k \in S & \Leftrightarrow k \in\left\{i \in \mathbb{N}: i \notin N_i\right\} \quad[S \operatorname{def}] \\
+                                      & \Leftrightarrow k \notin N_k \quad[\in \operatorname{def}]                                     \\
+                                      & \Leftrightarrow k \notin S \quad\left[S=N_k\right]
+                        \end{aligned}
+                  $$
+                  The fact that $k \in S$ iff $k \notin S$ is a contradiction. Thus the original assumption must be false and in fact $\mathcal{P}(\mathbb{\mathbb{N}})$ is not countable.\\
+            \end{proof}
+
+      \item Prove that $\mathbb{R}$ is uncountable. (Hint: Maybe consider the decimal representation of those numbers between 0 and 1.)
+            \begin{proof}
+                  Suppose for the sake of contradiction that $\mathbb{R}$ was in fact countable. Then its elements can be completely listed out. Consider the subset of $\mathbb{R}$ which is the set of real numbers in the range of $(0,1)$. We know that if $\mathbb{R}$ was countable, then the set of real numbers in the range of $(0,1)$ would also be countable.\\
+                  Let us assume that the set of real numbers in the range of $(0,1)$ is countable. Then its elements can be completely listed out. Let $r_i$ be the $i^{\text {th}}$ real number in this listing and note that each $r_i$ is able to be denoted in its unique decimal representation as follows:\\
+                  $$
+                        \begin{aligned}
+                               & r_0=0 . d_{00} d_{01} d_{02} \ldots \\
+                               & r_1=0 . d_{10} d_{11} d_{12} \ldots \\
+                               & r_2=0 . d_{20} d_{21} d_{22} \ldots \\
+                               & \ldots
+                        \end{aligned}
+                  $$
+
+
+                  Note that $i, j, d_{i j} \in \mathbb{N}$. $0 \leq d_{i j} \leq 9$. and each $r_i$ has no trailing 9s.\\
+                  Now consider the real number $s$ constructed as follows:
+                  $$
+                        s=0 . s_0 s_1 s_2 \cdots
+                  $$
+                  where the $i^{\text {th}}$ digit $s_i$ is definded as follows:
+                  $$
+                        s_i= 9 - d_{i i}
+                  $$
+                  We know that $s$ is a real number in the range of $(0,1)$ and this means that $s$ must be equal to $r_k$ for some natural $k$.\\
+                  However, $s$ differs from each $r_k$ in at least the $k^{\text {th}}$ decimal place such that $s_k \neq d_{kk}$ by the definition of $s_i$.
+                  Thus, $s \neq r_k$. This is a contradiction. Thus the assumption that the set of real numbers in the range of $(0,1)$ is countable must be false, therefore $\mathbb{R}$ is uncountable.
+            \end{proof}
+
+      \item Prove that the following languages are not regular:
+
+            11.12 $\left\{w w: w \in\{0,1\}^*\right\}$
+            \begin{proof}
+                  Let $L=\left\{w w: w \in\{0,1\}^*\right\}$. Suppose for the sake of contradiction that $L$ is regular. Then there exists some number $n>0$ such that all strings in $L$ of length at least $n$ can be pumped.
+
+                  Consider the string $s=0^n10^n1$ and note that $s \in L$ and that $|s|=2 n+2>n$.\\
+                  We now consider all possible ways to break up $s$ into $s=x y z$ such that $|y|>0$ and $|x y| \leq n$. Since the first $n$ symbols in $s$ are all 0s, the string $x$ and $y$ can only have $0$s in them.\\
+                  Let us say that $x=0^i$ and $y=0^j$, where $i \geq 0$ and $j \geq 1$. This means that the remaining symbols in $s$ go into $z=0^{n-i-j}10^n1$\\
+                  We now pick a natural number $k \geq 0$ such that $x y^k z$ is not in $L$. Selecting $k=2$, we get that $x y^k z=x y y z=$ $0^i 0^j 0^j 0^{n-i-j}10^n1=0^{n+j}10^n1$, which is not in $L$ since $j>0$ so $\left|0^{n+j}1\right|\neq\left|0^n1\right|$. This is a contradiction, so $L$ cannot be regular.\\
+            \end{proof}
+
+            \newpage
+
+            11.18 $\left\{0^n: n \text { is a power of } 2\right\}$
+            \begin{proof}
+                  Let $L=\left\{0^n: n\right.$ is a power of 2$\}$. Suppose for the sake of contradiction that $L$ is regular. Then there exits some number $k>0$ such that all strings in $L$ of length at least $k$ can be pumped.\\
+                  Consider the string $0^{2^a}$ where $a$ is some integer and that $2^a > k$. This string is in $L$ and has length $2^a \geq k$, so it can be pumped. Thus, $0^{2^a}=x y z$ for some strings $x, y, z$ where $|y|>0$ and $|x y| \leq k$ such that, for all $i \in \mathbb{N}$, the string $x y^i z$ is also in $L$.\\
+                  Because $|x y| \leq k$ and the string $0^{2^a}$ is only constituted with $0 s$, it must be that $y$ is made up entirely of $0s$. Pumping the string once therefore yields the string $0^{2^a+|y|}$ which is guaranteed by the pumping lemma to be in $L$. However, $2^a+|y|$ is not a power of 2, since we know that $|y|>0$, therefore $2^a+|y|>2^a$ and at the sametime, $|y| \leq|x y| \leq k < 2^a$ and the subsequent power of 2 that comes after $2^a$ is $2^{a+1}$, which means $2^a+|y|<2^a+2^a=2^{a+1}$. Thus, $2^a<2^a+|y|<2^{a+1}$ so we now know that $2^a+|y|$ is not a power of 2 . This is a contradiction, so $L$ cannot be regular.\\
+            \end{proof}
+
+
+
+\end{enumerate}
+\end{document}

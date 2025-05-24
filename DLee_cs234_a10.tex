@@ -1,0 +1,253 @@
+\documentclass[10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[version=4]{mhchem}
+\usepackage{stmaryrd}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage{multirow}
+\usepackage{amsthm}
+\usepackage{parskip}
+\graphicspath{ {./CS-234/} }
+
+\title{Assignment 10 - Turing Machines}
+
+\author{CS 234}
+\date{Daniel Lee}
+
+
+\begin{document}
+\maketitle
+
+\section*{Part 2 \quad Reducing with Turing Machines}
+
+\begin{enumerate}[label={}]
+      \item Prove that the following problems are undecidable using reductions. For each problem, write a sentence explaining in words what the implication of the undecidability of the language is for computer programs.\\
+      \item 14.10 $H A S E M P T Y=\left\{i: \lambda \in L\left(M_i\right)\right\}$
+
+            \begin{proof}
+                  This property can be shown via a reduction from $HALT$ to $HASEMPTY$.\\
+                  Suppose for the sake of contradiction that $HASEMPTY$ is decidable.
+                  Then there is some total Turing machine S that decides $HASEMPTY$.\\
+                  Now use S to define the machine H as given by the following pseudocode:
+                  $$\begin{aligned}
+                              1 \quad & \text{H(}i, x\text{)} =                                                              \\
+                              2 \quad & \quad \text{let } Q(y) = \text{run }\text{M}_i(x) \text{ then accept } \ \textbf{in} \\
+                              3 \quad & \quad \text{let } q = \text{index}(Q) \ \textbf{in}                                  \\
+                              4 \quad & \quad \text{S}(q)
+                        \end{aligned}$$
+                  Now note the following facts about H:\\
+                  Firstly, H is total. Values are only defined without interesting computation
+                  until line 4. Then in line 4, S is run, but S is total by assumption so this process
+                  will terminate.
+                  $$\text { Secondly, } \mathcal{L}(H)=H A L T \text {. This fact follows from the following two cases: }$$
+
+                  · Suppose $(i, x) \in H A L T$. Then the following chain of implications holds:
+
+                  $$
+                        \begin{array}{rlr}
+                              (i, x) \in H A L T & \Longrightarrow M_i(x) \text { halts }            & \text { HALT def }        \\
+                                                 & \Longrightarrow \forall y. Q(y) \text { accepts } & \text { Q def }           \\
+                                                 & \Longrightarrow \mathcal{L}(Q)=\Sigma^*           & \mathcal{L} \text { def } \\
+                                                 & \Longrightarrow \lambda  \in \mathcal{L}(Q)       & \lambda \in \Sigma^*      \\
+                                                 & \Longrightarrow \lambda  \in \mathcal{L}(M_q)     & q \text { def }           \\
+                                                 & \Longrightarrow S(q) \text { accepts }            & S \text { def }           \\
+                                                 & \Longrightarrow(i, x) \in \mathcal{L}(H)          & H \text { def }
+                        \end{array}
+                  $$
+
+                  · Suppose $(i, x) \notin H A L T$. Then the following chain of implications holds:
+
+                  $$
+                        \begin{array}{rlr}
+                              (i, x) \notin H A L T & \Longrightarrow M_i(x) \text { loops }          & \text { HALT def }        \\
+                                                    & \Longrightarrow \forall y. Q(y) \text { loops } & \text { Q def }           \\
+                                                    & \Longrightarrow \mathcal{L}(Q)=\emptyset        & \mathcal{L} \text { def } \\
+                                                    & \Longrightarrow \lambda  \notin \mathcal{L}(Q)  & \lambda \notin \emptyset  \\
+                                                    & \Longrightarrow \lambda \notin \mathcal{L}(M_q) & q \text { def }           \\
+                                                    & \Longrightarrow S(q) \text { rejects }          & S \text { def }           \\
+                                                    & \Longrightarrow(i, x) \notin \mathcal{L}(H)     & H \text { def }
+                        \end{array}
+                  $$
+
+
+                  Thus we know that $\mathcal{L}(H)=H A L T$ and $H$ is total. In other words, $H$ decides $H A L T$. However, $HALT$ is known to be undecidable (see Theorem 14.7 from the textbook). Thus, there is a contradiction, and the assumption that $HASEMPTY$ is decidable must be false. Therefore, $HASEMPTY$ is in fact undecidable.
+
+            \end{proof}
+
+            \newpage
+
+
+
+
+
+      \item 14.12 $SUBSET=\left\{(i, j): L\left(M_i\right) \subseteq L\left(M_j\right)\right\}$
+
+            \begin{proof}
+                  This property can be shown via a reduction from $HALT$ to $SUBSET$.\\
+                  Suppose for the sake of contradiction that $SUBSET$ is decidable.
+                  Then there is some total Turing machine S that decides $SUBSET$.\\
+                  Now use S to define the machine H as given by the following pseudocode:
+                  $$\begin{aligned}
+                              1 \quad & \text{H(}i', x\text{)} =                                                                       \\
+                              2 \quad & \quad \text{let } I(y) = \text{accept } \textbf{in}                                            \\
+                              3 \quad & \quad \text{let } i = \text{index}(I) \ \textbf{in}                                            \\
+                              4 \quad & \quad \text{let } J(z) = \text{run } \text{M}_{i^{\prime}}(x) \text{ then accept } \textbf{in} \\
+                              5 \quad & \quad \text{let } j = \text{index}(J) \ \textbf{in}                                            \\
+                              6 \quad & \quad \text{S}(i, j)
+                        \end{aligned}$$
+                  Now note the following facts about H:\\
+                  Firstly, H is total. Values are only defined without interesting computation
+                  until line 6. Then in line 6, S is run, but S is total by assumption so this process
+                  will terminate. \\
+                  Secondly, $\mathcal{L}(H)=H A L T$. This fact follows from the following two cases:\\
+                  · Suppose $(i', x) \in H A L T$. Then the following chain of implications holds:
+                  $$
+                        \begin{array}{rlr}
+                              (i', x) \in H A L T & \Longrightarrow \text{M}_{i^{\prime}}(x) \text { halts }                         & \text { HALT def }        \\
+                                                  & \Longrightarrow \forall z. J(z) \text { accepts }                                & \text { J def }           \\
+                                                  & \Longrightarrow \mathcal{L}(J)=\Sigma^*                                          & \mathcal{L} \text { def } \\
+                                                  & \Longrightarrow \mathcal{L}(I) \subseteq \mathcal{L}(J)                          & \mathcal{L}(I)=\Sigma^*   \\
+                                                  & \Longrightarrow \mathcal{L}\left(M_i\right)\subseteq \mathcal{L}\left(M_j\right) & i, j \text { def }        \\
+                                                  & \Longrightarrow S(i, j) \text { accepts }                                        & S \text { def }           \\
+                                                  & \Longrightarrow(i', x) \in \mathcal{L}(H)                                        & H \text { def }
+                        \end{array}
+                  $$
+
+                  · Suppose $(i', x) \notin H A L T$. Then the following chain of implications holds:
+
+                  $$
+                        \begin{array}{rlr}
+                              (i', x) \notin H A L T & \Longrightarrow \text{M}_{i^{\prime}}(x) \text { loops }                          & \text { HALT def }        \\
+                                                     & \Longrightarrow \forall z. J(z) \text { loops }                                   & \text { J def }           \\
+                                                     & \Longrightarrow \mathcal{L}(J)=\emptyset                                          & \mathcal{L} \text { def } \\
+                                                     & \Longrightarrow \mathcal{L}(I) \nsubseteq \mathcal{L}(J)                          & \mathcal{L}(I)=\Sigma^*   \\
+                                                     & \Longrightarrow \mathcal{L}\left(M_i\right)\nsubseteq \mathcal{L}\left(M_j\right) & i, j \text { def }        \\
+                                                     & \Longrightarrow S(i, j) \text { rejects }                                         & S \text { def }           \\
+                                                     & \Longrightarrow(i', x) \notin \mathcal{L}(H)                                      & H \text { def }
+                        \end{array}
+                  $$
+
+
+                  Thus we know that $\mathcal{L}(H)=H A L T$ and $H$ is total. In other words, $H$ decides $H A L T$. However, HALT is known to be undecidable (see Theorem 14.7 from the textbook). Thus, there is a contradiction, and the assumption that $SUBSET$ is decidable must be false. Therefore, $SUBSET$ is in fact undecidable.
+
+            \end{proof}
+
+            \newpage
+
+
+
+
+
+
+      \item 14.13 $DIFFERENT=\left\{(i, j): L\left(M_i\right) \neq L\left(M_j\right)\right\}$
+
+            \begin{proof}
+                  This property can be shown via a reduction from $HALT$ to $DIFFERENT$.\\
+                  Suppose for the sake of contradiction that $DIFFERENT$ is decidable.
+                  Then there is some total Turing machine S that decides $DIFFERENT$.\\
+                  Now use S to define the machine H as given by the following pseudocode:
+                  $$\begin{aligned}
+                              1 \quad & \text{H(}i', x\text{)} =                                                                       \\
+                              2 \quad & \quad \text{let } I(y) = \text{run } \text{M}_{i^{\prime}}(x) \text{ then accept } \textbf{in} \\
+                              3 \quad & \quad \text{let } i = \text{index}(I) \ \textbf{in}                                            \\
+                              4 \quad & \quad \text{let } J(z) = \text{loop } \textbf{in}                                              \\
+                              5 \quad & \quad \text{let } j = \text{index}(J) \ \textbf{in}                                            \\
+                              6 \quad & \quad \text{S}(i, j)
+                        \end{aligned}$$
+                  Now note the following facts about H:\\
+                  Firstly, H is total. Values are only defined without interesting computation
+                  until line 6. Then in line 6, S is run, but S is total by assumption so this process
+                  will terminate.\\
+                  Secondly, $\mathcal{L}(H)=H A L T$. This fact follows from the following two cases:\\
+                  · Suppose $(i', x) \in H A L T$. Then the following chain of implications holds:
+
+                  $$
+                        \begin{array}{rlr}
+                              (i', x) \in H A L T & \Longrightarrow \text{M}_{i^{\prime}}(x) \text { halts }                    & \text { HALT def }        \\
+                                                  & \Longrightarrow \forall y. I(y) \text { accepts }                           & \text { I def }           \\
+                                                  & \Longrightarrow \mathcal{L}(I)=\Sigma^*                                     & \mathcal{L} \text { def } \\
+                                                  & \Longrightarrow \mathcal{L}(I) \neq \mathcal{L}(J)                          & \mathcal{L}(J)=\emptyset  \\
+                                                  & \Longrightarrow \mathcal{L}\left(M_i\right)\neq \mathcal{L}\left(M_j\right) & i, j \text { def }        \\
+                                                  & \Longrightarrow S(i, j) \text { accepts }                                   & S \text { def }           \\
+                                                  & \Longrightarrow(i', x) \in \mathcal{L}(H)                                   & H \text { def }
+                        \end{array}
+                  $$
+
+                  · Suppose $(i', x) \notin H A L T$. Then the following chain of implications holds:
+
+                  $$
+                        \begin{array}{rlr}
+                              (i', x) \notin H A L T & \Longrightarrow \text{M}_{i^{\prime}}(x) \text { loops }                  & \text { HALT def }        \\
+                                                     & \Longrightarrow \forall y . I(y) \text { loops }                          & \text { I def }           \\
+                                                     & \Longrightarrow \mathcal{L}(I)=\emptyset                                  & \mathcal{L} \text { def } \\
+                                                     & \Longrightarrow \mathcal{L}(I) = \mathcal{L}(J)                           & \mathcal{L}(J)=\emptyset  \\
+                                                     & \Longrightarrow \mathcal{L}\left(M_i\right) = \mathcal{L}\left(M_j\right) & i, j \text { def }        \\
+                                                     & \Longrightarrow S(i, j) \text { rejects }                                 & S \text { def }           \\
+                                                     & \Longrightarrow(i', x) \notin \mathcal{L}(H)                              & H \text { def }
+                        \end{array}
+                  $$
+
+
+                  Thus we know that $\mathcal{L}(H)=H A L T$ and $H$ is total. In other words, $H$ decides $H A L T$. However, HALT is known to be undecidable (see Theorem 14.7 from the textbook). Thus, there is a contradiction, and the assumption that $DIFFERENT$ is decidable must be false. Therefore, $DIFFERENT$ is in fact undecidable.
+
+            \end{proof}
+
+      \item 14.14 $OVERLAP=\left\{(i, j): L\left(M_i\right) \cap L\left(M_j\right) \neq \emptyset\right\}$
+
+            \begin{proof}
+                  This property can be shown via a reduction from $HALT$ to $OVERLAP$.\\
+                  Suppose for the sake of contradiction that $OVERLAP$ is decidable.
+                  Then there is some total Turing machine S that decides $OVERLAP$.\\
+                  Now use S to define the machine H as given by the following pseudocode:
+                  $$\begin{aligned}
+                              1 \quad & \text{H(}i', x\text{)} =                                                                       \\
+                              2 \quad & \quad \text{let } I(y) = \text{run } \text{M}_{i^{\prime}}(x) \text{ then accept } \textbf{in} \\
+                              3 \quad & \quad \text{let } i = \text{index}(I) \ \textbf{in}                                            \\
+                              4 \quad & \quad \text{let } J(z) = \text{accept } \textbf{in}                                            \\
+                              5 \quad & \quad \text{let } j = \text{index}(J) \ \textbf{in}                                            \\
+                              6 \quad & \quad \text{S}(i, j)
+                        \end{aligned}$$
+                  Now note the following facts about H:\\
+                  Firstly, H is total. Values are only defined without interesting computation
+                  until line 6. Then in line 6, S is run, but S is total by assumption so this process
+                  will terminate.\\
+                  Secondly, $\mathcal{L}(H)=H A L T$. This fact follows from the following two cases:\\
+                  · Suppose $(i', x) \in H A L T$. Then the following chain of implications holds:
+
+                  $$
+                        \begin{array}{rlr}
+                              (i', x) \in H A L T & \Longrightarrow \text{M}_{i^{\prime}}(x) \text { halts }              & \text { HALT def }        \\
+                                                  & \Longrightarrow \forall y. I(y) \text { accepts }                     & \text { I def }           \\
+                                                  & \Longrightarrow \mathcal{L}(I)=\Sigma^*                               & \mathcal{L} \text { def } \\
+                                                  & \Longrightarrow \mathcal{L}(I) \cap \mathcal{L}(J) \neq \emptyset     & \mathcal{L}(J)=\Sigma^*   \\
+                                                  & \Longrightarrow \mathcal{L}(M_i) \cap \mathcal{L}(M_j) \neq \emptyset & i, j \text { def }        \\
+                                                  & \Longrightarrow S(i, j) \text { accepts }                             & S \text { def }           \\
+                                                  & \Longrightarrow(i', x) \in \mathcal{L}(H)                             & H \text { def }
+                        \end{array}
+                  $$
+
+                  · Suppose $(i', x) \notin H A L T$. Then the following chain of implications holds:
+
+                  $$
+                        \begin{array}{rlr}
+                              (i', x) \notin H A L T & \Longrightarrow \text{M}_{i^{\prime}}(x) \text { loops }           & \text { HALT def }        \\
+                                                     & \Longrightarrow \forall y. I(y) \text { loops }                    & \text { I def }           \\
+                                                     & \Longrightarrow \mathcal{L}(I)=\emptyset                           & \mathcal{L} \text { def } \\
+                                                     & \Longrightarrow \mathcal{L}(I) \cap \mathcal{L}(J) = \emptyset     & \mathcal{L}(J)=\Sigma^*   \\
+                                                     & \Longrightarrow \mathcal{L}(M_i) \cap \mathcal{L}(M_j) = \emptyset & i, j \text { def }        \\
+                                                     & \Longrightarrow S(i, j) \text { rejects }                          & S \text { def }           \\
+                                                     & \Longrightarrow(i', x) \notin \mathcal{L}(H)                       & H \text { def }
+                        \end{array}
+                  $$
+
+                  Thus we know that $\mathcal{L}(H)=H A L T$ and $H$ is total. In other words, $H$ decides $H A L T$. However, HALT is known to be undecidable (see Theorem 14.7 from the textbook). Thus, there is a contradiction, and the assumption that $OVERLAP$ is decidable must be false. Therefore, $OVERLAP$ is in fact undecidable.
+
+            \end{proof}
+
+\end{enumerate}
+\end{document}
